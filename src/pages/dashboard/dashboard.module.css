@@ -1,0 +1,45 @@
+.dashboard-container {
+    display: flex;
+    flex-direction: column;
+}
+
+.add-item-container {
+    margin-bottom: 10px;
+}
+
+.item-container {
+    margin-bottom: 20px;
+}
+
+.item-container>div {
+    display: flex;
+    align-items: center;
+}
+
+.item-container>div>div {
+    margin-right: 10px;
+}
+
+.add-subitem-container {
+    margin-left: 30px;
+    margin-bottom: 10px;
+}
+
+.subitem-container {
+    display: flex;
+    align-items: center;
+}
+
+.subitem-container>div {
+    margin-right: 10px;
+    display: flex;
+    align-items: center;
+}
+
+.subitem-container>input[type="text"] {
+    margin-right: 10px;
+}
+
+.subitem-container>button {
+    margin-right: 5px;
+}

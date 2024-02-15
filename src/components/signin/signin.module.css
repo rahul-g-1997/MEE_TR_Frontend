@@ -1,0 +1,135 @@
+.container {
+    top: 60px;
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+    right: 50px;
+    position: relative;
+    bottom: 100px;
+    margin-bottom: 100px;
+
+}
+
+.background {
+    width: 430px;
+    height: 420px;
+    position: absolute;
+    /* Align to the right */
+    top: 50%;
+    transform: translateY(-50%);
+    /* Center vertically */
+}
+
+.background .shape {
+    height: 200px;
+    width: 200px;
+    position: absolute;
+    border-radius: 50%;
+    margin-bottom: 20px;
+}
+
+.shape:first-child {
+    background: linear-gradient(#90481f, #f98b4c);
+    left: -80px;
+    top: -120px;
+}
+
+.shape:last-child {
+    background: linear-gradient(to right, #90481f,
+            #f98b4c);
+    right: -45px;
+    bottom: -50px;
+}
+
+form {
+    height: 420px;
+    width: 400px;
+    background-color: rgba(255, 255, 255, 0.13);
+    border-radius: 10px;
+    backdrop-filter: blur(10px);
+    border: 2px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 0 40px rgba(8, 7, 16, 0.6);
+    padding: 20px;
+    margin-bottom: 100px;
+}
+
+form * {
+    font-family: 'Poppins', sans-serif;
+    color: #000000;
+    letter-spacing: 0.5px;
+    outline: none;
+    border: none;
+}
+
+form h3 {
+    font-size: 32px;
+    font-weight: 500;
+    line-height: 42px;
+    text-align: center;
+}
+
+label {
+    display: block;
+    margin-top: 20px;
+    font-size: 16px;
+    font-weight: 500;
+}
+
+input {
+    display: block;
+    height: 50px;
+    width: 90%;
+    background-color: rgba(255, 255, 255, 0.218);
+    border-radius: 3px ;
+    padding: 0 10px;
+    margin-top: 5px;
+    font-size: 14px;
+    font-weight: 300;
+    border: #000000 solid 1px;
+}
+
+::placeholder {
+    color: #000000;
+}
+
+button {
+    margin-top: 20px;
+    width: 100%;
+    background-color: #007bff;
+    color: #ffffff;
+    padding: 7px 0;
+    font-size: 18px;
+    font-weight: 600;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+
+
+button:hover {
+    background-color: #0056b3;
+}
+
+@media (max-width: 768px) {
+    .navelements ul li:not(:last-child) {
+        margin-right: 30px;
+
+    }
+
+    .background {
+        width: 300px;
+        ;
+    }
+
+    form {
+        width: 300px;
+        margin-left: 90px;
+    }
+
+    .shape:first-child {
+        left: -25px;
+    }
+
+}
+
+@media (max-width: 600px) {}
