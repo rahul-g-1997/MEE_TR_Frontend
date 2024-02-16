@@ -1,6 +1,12 @@
-import  { useState } from "react";
-import "./dashboard.module.css";
+import { useEffect, useState } from "react";
+import style from "./Dashboard.module.css";
 import axios from "axios";
+import AddIcon from "@mui/icons-material/Add";
+import SaveIcon from "@mui/icons-material/Save";
+import CancelIcon from "@mui/icons-material/Cancel";
+import DoneIcon from "@mui/icons-material/Done";
+import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
+import EditIcon from "@mui/icons-material/Edit";
 
 const Dashboard = () => {
   const [data, setData] = useState([]);
@@ -88,25 +94,42 @@ const Dashboard = () => {
   };
 
   // Function to send the data to the backend
-  const sendDataToBackend = async () => {
-    try {
-      console.log(data);
-      const response = await axios.post("/login", data, {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-      console.log("Data sent successfully!", response.data);
-    } catch (error) {
-      console.error("Error sending data to the backend:", error);
-    }
-  };
+  // const sendDataToBackend = async () => {
+  //   try {
+  //     console.log(data);
+  //     const response = await axios.get("/login", data, {
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //       },
+  //     });
+  //     console.log("Data sent successfully!", response.data);
+  //   } catch (error) {
+  //     console.error("Error sending data to the backend:", error);
+  //   }
+  // };
+  
+ useEffect(() => {
+   axios
+     .get("/api/data")
+     .then(function (response) {
+       console.log("Message from backend:", response.data);
+       // Now you can use the message received from the backend as needed in your frontend
+     })
+     .catch(function (error) {
+       console.log("Error fetching data:", error);
+     });
+ }, []);
 
   return (
-    <div className="dashboard-container">
-      <div className="add-item-container">
+    <div className={style.dashboardContainer}>
+      <div className={style.addItemContainer}>
         {!isAddingItem ? (
-          <button onClick={() => setIsAddingItem(true)}>Add Item</button>
+          <button
+            className={style.additemBtn}
+            onClick={() => setIsAddingItem(true)}
+          >
+            Add Item
+          </button>
         ) : (
           <div>
             <input
@@ -115,7 +138,7 @@ const Dashboard = () => {
               onChange={handleItemInputChange}
               placeholder="Enter item name"
             />
-            <button onClick={addItem}>Save Item</button>
+            <button onClick={addItem}>Save</button>
             <button onClick={() => setIsAddingItem(false)}>Cancel</button>
           </div>
         )}
@@ -124,7 +147,7 @@ const Dashboard = () => {
         {/* Ordered list for items */}
         {data.map((item, index) => (
           <li key={index}>
-            <div className="item-container">
+            <div className={style.itemContainer}>
               {editingItemIndex === index ? (
                 <div>
                   <input
@@ -137,22 +160,24 @@ const Dashboard = () => {
                       setItemName(e.target.value);
                     }}
                   />
-                  <button onClick={finishEditingItem}>Done</button>
+                  <DoneIcon onClick={finishEditingItem}>Done</DoneIcon>
                 </div>
               ) : (
                 <div>
-                  <div className="item-title">{item.title}</div>
-                  <button onClick={() => startEditingItem(index)}>
+                  <div className={style.itemTitle}>{item.title}</div>
+                  <EditIcon onClick={() => startEditingItem(index)}>
                     Edit Item
-                  </button>
-                  <button onClick={() => deleteItem(index)}>Delete Item</button>
+                  </EditIcon>
+                  <DeleteForeverIcon onClick={() => deleteItem(index)}>
+                    Delete Item
+                  </DeleteForeverIcon>
                 </div>
               )}
-              <div className="add-subitem-container">
+              <div className={style.addSubitemContainer}>
                 {!isAddingSubItem ? (
-                  <button onClick={() => setIsAddingSubItem(true)}>
+                  <AddIcon onClick={() => setIsAddingSubItem(true)}>
                     Create Sub-Item
-                  </button>
+                  </AddIcon>
                 ) : (
                   <div>
                     <input
@@ -168,12 +193,12 @@ const Dashboard = () => {
                       placeholder="Enter sub-item description"
                     />{" "}
                     {/* Add input field for sub-item description */}
-                    <button onClick={() => addSubItem(index)}>
+                    <SaveIcon onClick={() => addSubItem(index)}>
                       Save Sub-Item
-                    </button>
-                    <button onClick={() => setIsAddingSubItem(false)}>
+                    </SaveIcon>
+                    <CancelIcon onClick={() => setIsAddingSubItem(false)}>
                       Cancel
-                    </button>
+                    </CancelIcon>
                   </div>
                 )}
               </div>
@@ -181,7 +206,7 @@ const Dashboard = () => {
                 {/* Unordered list for sub-items */}
                 {item.subItems.map((subItem, subIndex) => (
                   <li key={subIndex}>
-                    <div className="subitem-container">
+                    <div className={style.subitemContainer}>
                       {editingSubItemIndex &&
                       editingSubItemIndex.itemIndex === index &&
                       editingSubItemIndex.subItemIndex === subIndex ? (
@@ -199,25 +224,29 @@ const Dashboard = () => {
                             }
                           />{" "}
                           {/* Add input field for editing sub-item description */}
-                          <button onClick={finishEditingSubItem}>Done</button>
+                          <DoneIcon onClick={finishEditingSubItem}>
+                            Done
+                          </DoneIcon>
                         </div>
                       ) : (
                         <div>
-                          <div className="subitem-title">{subItem.title}</div>
-                          <div className="subitem-description">
+                          <div className={style.subitemTitle}>
+                            {subItem.title}
+                          </div>
+                          <div className={style.subitemDescription}>
                             {subItem.description}
                           </div>{" "}
                           {/* Display sub-item description */}
-                          <button
+                          <EditIcon
                             onClick={() => startEditingSubItem(index, subIndex)}
                           >
                             Edit Sub-Item
-                          </button>
-                          <button
+                          </EditIcon>
+                          <DeleteForeverIcon
                             onClick={() => deleteSubItem(index, subIndex)}
                           >
                             Delete Sub-Item
-                          </button>
+                          </DeleteForeverIcon>
                         </div>
                       )}
                     </div>
@@ -228,7 +257,7 @@ const Dashboard = () => {
           </li>
         ))}
       </ol>
-      <button onClick={sendDataToBackend}>Save data</button>
+      {/* <button onClick={sendDataToBackend}>Save data</button> */}
     </div>
   );
 };

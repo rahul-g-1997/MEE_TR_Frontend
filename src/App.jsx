@@ -1,7 +1,7 @@
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import "./App.css";
 import { Home, About, Contacts, Error } from "./pages/index";
-import { Navbar, Footer, Usernav } from "./components/index";
+import { Navbar, Footer, Usernav, Sidebar } from "./components/index";
 import upArrowIcon from "./assets/arrow.png";
 import { useState, useEffect } from "react";
 import Dashboard from "./pages/dashboard/Dashboard";
@@ -19,6 +19,8 @@ function App() {
     <Router>
       <div>
         {!islogin ? <Navbar /> : <Usernav />}
+        {/* {!islogin && <Sidebar/>} */}
+
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/about" element={<About />} />
