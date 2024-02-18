@@ -1,11 +1,14 @@
-import {  Dataentry, Sidebar } from "../../components";
-import Dataentry2 from "../../components/dataentry/Dataentry2";
+import { useState } from "react";
+import {   Dataentry, Sidebar } from "../../components";
 import style from "./Dashboard.module.css";
 
 const Dashboard = () => {
+  const [data, setData] = useState({})
+    console.log(data);
+
   return (
     <div className={style.dashboardContainer}>
-      <Sidebar/><Dataentry/>
+      <Sidebar /> <Dataentry data={data} setData={setData}/>
     </div>
   );
 };

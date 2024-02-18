@@ -16,6 +16,7 @@ export default function Dataentry() {
   const [isAddingSubItem, setIsAddingSubItem] = useState(false);
   const [editingItemIndex, setEditingItemIndex] = useState(null);
   const [editingSubItemIndex, setEditingSubItemIndex] = useState(null);
+  const [addingSubItemIndex, setAddingSubItemIndex] = useState(null);
 
   // Function to handle item input field change
   const handleItemInputChange = (event) => {
@@ -54,7 +55,13 @@ export default function Dataentry() {
       setSubItemName("");
       setSubItemDescription("");
       setIsAddingSubItem(false);
+      setAddingSubItemIndex(null); // Reset the index for adding sub-item
     }
+  };
+
+  const handleAddSubItemClick = (index) => {
+    setIsAddingSubItem(true);
+    setAddingSubItemIndex(index);
   };
 
   // Function to delete an item by index
@@ -80,6 +87,7 @@ export default function Dataentry() {
   // Function to finish editing an item
   const finishEditingItem = () => {
     setEditingItemIndex(null);
+    setItemName("");
   };
 
   // Function to start editing a sub-item
@@ -152,22 +160,36 @@ export default function Dataentry() {
                       setItemName(e.target.value);
                     }}
                   />
-                  <DoneIcon onClick={finishEditingItem}>Done</DoneIcon>
+                  <DoneIcon
+                    style={{ cursor: "pointer" }}
+                    onClick={finishEditingItem}
+                  >
+                    Done
+                  </DoneIcon>
                 </div>
               ) : (
                 <div>
                   <div className={style.itemTitle}>{item.title}</div>
-                  <EditIcon onClick={() => startEditingItem(index)}>
+                  <EditIcon
+                    style={{ cursor: "pointer" }}
+                    onClick={() => startEditingItem(index)}
+                  >
                     Edit Item
                   </EditIcon>
-                  <DeleteForeverIcon onClick={() => deleteItem(index)}>
+                  <DeleteForeverIcon
+                    style={{ cursor: "pointer" }}
+                    onClick={() => deleteItem(index)}
+                  >
                     Delete Item
                   </DeleteForeverIcon>
                 </div>
               )}
               <div className={style.addSubitemContainer}>
                 {!isAddingSubItem ? (
-                  <AddIcon onClick={() => setIsAddingSubItem(true)}>
+                  <AddIcon
+                    style={{ cursor: "pointer" }}
+                    onClick={() => handleAddSubItemClick(index)}
+                  >
                     Create Sub-Item
                   </AddIcon>
                 ) : (
@@ -186,10 +208,16 @@ export default function Dataentry() {
                     />
                     <input type="file" />
                     {/* Add input field for sub-item description */}
-                    <SaveIcon onClick={() => addSubItem(index)}>
+                    <SaveIcon
+                      style={{ cursor: "pointer" }}
+                      onClick={() => addSubItem(index)}
+                    >
                       Save Sub-Item
                     </SaveIcon>
-                    <CancelIcon onClick={() => setIsAddingSubItem(false)}>
+                    <CancelIcon
+                      style={{ cursor: "pointer" }}
+                      onClick={() => setIsAddingSubItem(false)}
+                    >
                       Cancel
                     </CancelIcon>
                   </div>
@@ -218,29 +246,41 @@ export default function Dataentry() {
                             className={style.subitemDescription} // Add this className
                           />
                           {/* Add input field for editing sub-item description */}
-                          <DoneIcon onClick={finishEditingSubItem}>
+                          <DoneIcon
+                            style={{ cursor: "pointer" }}
+                            onClick={finishEditingSubItem}
+                          >
                             Done
                           </DoneIcon>
                         </div>
                       ) : (
                         <div>
-                          <div className={style.subitemTitle}>
-                            {subItem.title}
+                          <div className={style.inline}>
+                            {" "}
+                            <span className={style.subitemTitle}>
+                              {subItem.title}
+                            </span>
+                            {/* Display sub-item description */}
+                            <EditIcon
+                              style={{ cursor: "pointer" }}
+                              onClick={() =>
+                                startEditingSubItem(index, subIndex)
+                              }
+                            >
+                              Edit Sub-Item
+                            </EditIcon>
+                            <DeleteForeverIcon
+                              style={{ cursor: "pointer" }}
+                              onClick={() => deleteSubItem(index, subIndex)}
+                            >
+                              Delete Sub-Item
+                            </DeleteForeverIcon>
                           </div>
                           <div className={style.subitemDescription}>
+                            Description:- {"("}
                             {subItem.description}
-                          </div>{" "}
-                          {/* Display sub-item description */}
-                          <EditIcon
-                            onClick={() => startEditingSubItem(index, subIndex)}
-                          >
-                            Edit Sub-Item
-                          </EditIcon>
-                          <DeleteForeverIcon
-                            onClick={() => deleteSubItem(index, subIndex)}
-                          >
-                            Delete Sub-Item
-                          </DeleteForeverIcon>
+                            {")"}
+                          </div>
                         </div>
                       )}
                     </div>
