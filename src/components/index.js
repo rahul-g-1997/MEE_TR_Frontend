@@ -3,3 +3,4 @@ export { default as Footer } from "./footer/Footer";
 export { default as Signin } from "./signin/Signin";
 export { default as Usernav } from "./usernav/Usernav";
 export { default as Sidebar } from "./sidebar/Sidebar";
+export { default as Dataentry } from "./dataentry/Dataentry";

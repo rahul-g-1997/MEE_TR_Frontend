@@ -1,9 +1,5 @@
 import { Signin } from "../../components/index";
 
-export default function Home() {
-  return (
-    <div>
-      <Signin />
-    </div>
-  );
+export default function Home(islogin) {
+  return <div>{islogin && <Signin /> }</div>;
 }

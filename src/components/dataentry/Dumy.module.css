@@ -1,0 +1,46 @@
+/* 
+.inputoutputform {
+    margin: 30px;
+}
+
+.inputoutputform input {
+    color: #000;
+    max-width: 500px;
+    min-width: 300px;
+    height: 30px;
+}
+
+.inputoutputform button {
+    height: 30px;
+    padding: 3px;
+    margin: 5px;
+}
+
+.iteminput {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.iteminput input {
+    margin-right: 10px;
+}
+
+.itemlist {
+    margin-left: 100px;
+    margin-top: 30px;
+}
+
+.itemlist li {
+    margin-bottom: 10px;
+}
+
+.inline {
+    display: flex;
+    align-items: center;
+    
+}
+
+.nextline {
+    margin-left: 20px;
+} */

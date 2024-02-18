@@ -12,10 +12,8 @@ export default function Navbar() {
   return (
     <nav className={style.navbar}>
       <div className={style.container}>
-        <NavLink to="/">
-          <div className={style.logo}>
-            <h1>LOGO</h1>
-          </div>
+        <NavLink to="/" className={style.logo}>
+          <h1>LOGO</h1>
         </NavLink>
         <div className={style.menuicon} onClick={handleShowNavbar}>
           <Hamburger />
