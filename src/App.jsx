@@ -2,7 +2,7 @@ import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import "./App.css";
 import { Home, About, Contacts, Error } from "./pages/index";
 import { Navbar, Footer, Usernav } from "./components/index";
-import upArrowIcon from "./assets/arrow.png";
+import upArrowIcon from "./assets/up-arrow.png";
 import { useState, useEffect } from "react";
 import Dashboard from "./pages/dashboard/Dashboard";
 import { checkLogin } from "./auth/index";

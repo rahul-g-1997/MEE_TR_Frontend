@@ -19,7 +19,7 @@ body {
 
 .navbar {
     height: 60px;
-    background-color: #90481f;
+    background-color: #6a6a6a;
     position: relative;
     position: sticky;
     top: 0;
@@ -86,7 +86,7 @@ body {
         position: absolute;
         right: 0;
         top: 60px;
-        background-color: #90481f;
+        background-color: #6a6a6a;
         width: 0px;
         height: calc(100vh - 60px);
         transition: all 0.3s ease-in;

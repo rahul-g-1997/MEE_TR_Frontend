@@ -13,6 +13,7 @@ export default function Dataentry() {
   const [itemName, setItemName] = useState("");
   const [subItemName, setSubItemName] = useState("");
   const [subItemDescription, setSubItemDescription] = useState("");
+  const [question, setQuestion] = useState(""); // Added state for question
   const [isAddingSubItem, setIsAddingSubItem] = useState(false);
   const [editingItemIndex, setEditingItemIndex] = useState(null);
   const [editingSubItemIndex, setEditingSubItemIndex] = useState(null);
@@ -33,12 +34,18 @@ export default function Dataentry() {
     setSubItemDescription(event.target.value);
   };
 
+  // Function to handle question input field change
+  const handleQuestionInputChange = (event) => {
+    setQuestion(event.target.value);
+  };
+
   // Function to add an item
   const addItem = () => {
     if (itemName.trim() !== "") {
       const newItem = { title: itemName, subItems: [] };
       setData([...data, newItem]);
       setItemName("");
+      // sendDataToBackend();
     }
   };
 
@@ -48,6 +55,7 @@ export default function Dataentry() {
       const newItem = {
         title: subItemName,
         description: subItemDescription,
+        questions: [], // Initialize questions array
       };
       const newData = [...data];
       newData[itemIndex].subItems.push(newItem);
@@ -56,6 +64,21 @@ export default function Dataentry() {
       setSubItemDescription("");
       setIsAddingSubItem(false);
       setAddingSubItemIndex(null); // Reset the index for adding sub-item
+      sendDataToBackend();
+    }
+  };
+
+  // Function to add a question to a sub-item
+  const addQuestion = (itemIndex, subItemsIndex) => {
+    if (question.trim() !== "") {
+      const newQuestion = {
+        question: question,
+      };
+      const newData = [...data];
+      newData[itemIndex].subItems[subItemsIndex].questions.push(newQuestion);
+      setData(newData);
+      setQuestion("");
+      sendDataToBackend();
     }
   };
 
@@ -103,31 +126,19 @@ export default function Dataentry() {
   };
 
   // Function to send the data to the backend
-  // const sendDataToBackend = async () => {
-  //   try {
-  //     console.log(data);
-  //     const response = await axios.get("/login", data, {
-  //       headers: {
-  //         "Content-Type": "application/json",
-  //       },
-  //     });
-  //     console.log("Data sent successfully!", response.data);
-  //   } catch (error) {
-  //     console.error("Error sending data to the backend:", error);
-  //   }
-  // };
-
-  useEffect(() => {
-    axios
-      .get("/api/data")
-      .then(function (response) {
-        console.log("Message from backend:", response.data);
-        // Now you can use the message received from the backend as needed in your frontend
-      })
-      .catch(function (error) {
-        console.log("Error fetching data:", error);
+  const sendDataToBackend = async () => {
+    try {
+      console.log(data);
+      const response = await axios.get("/login", data, {
+        headers: {
+          "Content-Type": "application/json",
+        },
       });
-  }, []);
+      console.log("Data sent successfully!");
+    } catch (error) {
+      console.error("Error sending data to the backend:", error);
+    }
+  };
 
   return (
     <div className={style.dashboardContainer}>
@@ -135,7 +146,7 @@ export default function Dataentry() {
         <div className={style.inputContainer}>
           <input
             type="text"
-            value={itemName} // Accessing itemName property here
+            value={itemName}
             onChange={handleItemInputChange}
             placeholder="Enter item name"
           />
@@ -206,7 +217,6 @@ export default function Dataentry() {
                       onChange={handleSubItemDescriptionChange}
                       placeholder="Enter sub-item description"
                     />
-                    <input type="file" />
                     {/* Add input field for sub-item description */}
                     <SaveIcon
                       style={{ cursor: "pointer" }}
@@ -243,7 +253,7 @@ export default function Dataentry() {
                             onChange={(e) =>
                               setSubItemDescription(e.target.value)
                             }
-                            className={style.subitemDescription} // Add this className
+                            className={style.subitemDescription}
                           />
                           {/* Add input field for editing sub-item description */}
                           <DoneIcon
@@ -281,6 +291,26 @@ export default function Dataentry() {
                             {subItem.description}
                             {")"}
                           </div>
+                          {/* Adding question functionality */}
+                          <div className={style.inline}>
+                            <input
+                              type="text"
+                              value={question}
+                              onChange={handleQuestionInputChange}
+                              placeholder="Enter question"
+                            />
+                            <SaveIcon
+                              style={{ cursor: "pointer" }}
+                              onClick={() => addQuestion(index, subIndex)}
+                            >
+                              Save Question
+                            </SaveIcon>
+                          </div>
+                          <ul>
+                            {subItem.questions.map((q, qIndex) => (
+                              <li key={qIndex}>{q.question}</li>
+                            ))}
+                          </ul>
                         </div>
                       )}
                     </div>
