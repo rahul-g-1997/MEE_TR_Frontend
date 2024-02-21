@@ -11,8 +11,7 @@
     --text: #141B34;
     --divider-bg: var(--bg);
     --shadow-color: #E9E6E4;
-    --shadow: 0px 0px 0px 1.4px var(--shadow-color),
-        0px 0px 2.8px 0px var(--shadow-color);
+    --shadow: 1px 2px 4px rgba(0, 0, 0, 1);
 }
 
 body {

@@ -29,14 +29,14 @@
 }
 
 .shape:first-child {
-    background: linear-gradient(#90481f, #f98b4c);
+    background: linear-gradient(#6a6a6a, #a5a5a5);
     left: -80px;
     top: -120px;
 }
 
 .shape:last-child {
-    background: linear-gradient(to right, #90481f,
-            #f98b4c);
+    background: linear-gradient(to right, #6a6a6a,
+            #a5a5a5);
     right: -45px;
     bottom: -50px;
 }

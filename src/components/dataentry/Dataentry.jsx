@@ -13,11 +13,14 @@ export default function Dataentry() {
   const [itemName, setItemName] = useState("");
   const [subItemName, setSubItemName] = useState("");
   const [subItemDescription, setSubItemDescription] = useState("");
-  const [question, setQuestion] = useState(""); // Added state for question
+  const [question, setQuestion] = useState("");
   const [isAddingSubItem, setIsAddingSubItem] = useState(false);
   const [editingItemIndex, setEditingItemIndex] = useState(null);
   const [editingSubItemIndex, setEditingSubItemIndex] = useState(null);
   const [addingSubItemIndex, setAddingSubItemIndex] = useState(null);
+  const [editingQuestion, setEditingQuestion] = useState(null);
+  const [editedQuestion, setEditedQuestion] = useState("");
+  const [isAddingQuestion , setIsAddingQuestion] = useState(false)
 
   // Function to handle item input field change
   const handleItemInputChange = (event) => {
@@ -39,13 +42,17 @@ export default function Dataentry() {
     setQuestion(event.target.value);
   };
 
+  // Function to handle edited question input field change
+  const handleEditedQuestionInputChange = (event) => {
+    setEditedQuestion(event.target.value);
+  };
+
   // Function to add an item
   const addItem = () => {
     if (itemName.trim() !== "") {
       const newItem = { title: itemName, subItems: [] };
       setData([...data, newItem]);
       setItemName("");
-      // sendDataToBackend();
     }
   };
 
@@ -55,7 +62,7 @@ export default function Dataentry() {
       const newItem = {
         title: subItemName,
         description: subItemDescription,
-        questions: [], // Initialize questions array
+        questions: [],
       };
       const newData = [...data];
       newData[itemIndex].subItems.push(newItem);
@@ -63,8 +70,7 @@ export default function Dataentry() {
       setSubItemName("");
       setSubItemDescription("");
       setIsAddingSubItem(false);
-      setAddingSubItemIndex(null); // Reset the index for adding sub-item
-      sendDataToBackend();
+      setAddingSubItemIndex(null);
     }
   };
 
@@ -78,13 +84,37 @@ export default function Dataentry() {
       newData[itemIndex].subItems[subItemsIndex].questions.push(newQuestion);
       setData(newData);
       setQuestion("");
-      sendDataToBackend();
+      setIsAddingQuestion(false);
     }
   };
 
-  const handleAddSubItemClick = (index) => {
-    setIsAddingSubItem(true);
-    setAddingSubItemIndex(index);
+  // Function to delete a question from a sub-item
+  const deleteQuestion = (itemIndex, subItemsIndex, questionIndex) => {
+    const newData = [...data];
+    newData[itemIndex].subItems[subItemsIndex].questions.splice(
+      questionIndex,
+      1
+    );
+    setData(newData);
+  };
+
+  // Function to edit a question in a sub-item
+  const editQuestion = (itemIndex, subItemsIndex, questionIndex) => {
+    setEditingQuestion({ itemIndex, subItemsIndex, questionIndex });
+    setEditedQuestion(
+      data[itemIndex].subItems[subItemsIndex].questions[questionIndex].question
+    );
+  };
+
+  // Function to save edited question in a sub-item
+  const saveEditedQuestion = () => {
+    const newData = [...data];
+    newData[editingQuestion.itemIndex].subItems[
+      editingQuestion.subItemsIndex
+    ].questions[editingQuestion.questionIndex].question = editedQuestion;
+    setData(newData);
+    setEditingQuestion(null);
+    setEditedQuestion("");
   };
 
   // Function to delete an item by index
@@ -116,29 +146,37 @@ export default function Dataentry() {
   // Function to start editing a sub-item
   const startEditingSubItem = (itemIndex, subItemIndex) => {
     setEditingSubItemIndex({ itemIndex, subItemIndex });
-    setSubItemName(data[itemIndex].subItems[subItemIndex].title);
-    setSubItemDescription(data[itemIndex].subItems[subItemIndex].description);
+    setSubItemName(data[itemIndex].subItems[subItemIndex].title); // Set initial subItemName
+    setSubItemDescription(data[itemIndex].subItems[subItemIndex].description); // Set initial subItemDescription
   };
 
   // Function to finish editing a sub-item
   const finishEditingSubItem = () => {
-    setEditingSubItemIndex(null);
+    if (editingSubItemIndex !== null) {
+      const { itemIndex, subItemIndex } = editingSubItemIndex;
+      const newData = [...data];
+      newData[itemIndex].subItems[subItemIndex].title = subItemName; // Update edited sub-item title
+      newData[itemIndex].subItems[subItemIndex].description =
+        subItemDescription; // Update edited sub-item description
+      setData(newData);
+      setEditingSubItemIndex(null);
+    }
   };
 
   // Function to send the data to the backend
-  const sendDataToBackend = async () => {
-    try {
-      console.log(data);
-      const response = await axios.get("/login", data, {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-      console.log("Data sent successfully!");
-    } catch (error) {
-      console.error("Error sending data to the backend:", error);
-    }
-  };
+  // const sendDataToBackend = async () => {
+  //   try {
+  //     console.log(data);
+  //     const response = await axios.get("/login", data, {
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //       },
+  //     });
+  //     console.log("Data sent successfully!");
+  //   } catch (error) {
+  //     console.error("Error sending data to the backend:", error);
+  //   }
+  // };
 
   return (
     <div className={style.dashboardContainer}>
@@ -195,11 +233,16 @@ export default function Dataentry() {
                   </DeleteForeverIcon>
                 </div>
               )}
+
+              {/* Add sub-item */}
               <div className={style.addSubitemContainer}>
                 {!isAddingSubItem ? (
                   <AddIcon
                     style={{ cursor: "pointer" }}
-                    onClick={() => handleAddSubItemClick(index)}
+                    onClick={() => {
+                      setIsAddingSubItem(true);
+                      setAddingSubItemIndex(index);
+                    }}
                   >
                     Create Sub-Item
                   </AddIcon>
@@ -217,7 +260,7 @@ export default function Dataentry() {
                       onChange={handleSubItemDescriptionChange}
                       placeholder="Enter sub-item description"
                     />
-                    {/* Add input field for sub-item description */}
+                    <input type="file" />
                     <SaveIcon
                       style={{ cursor: "pointer" }}
                       onClick={() => addSubItem(index)}
@@ -233,44 +276,43 @@ export default function Dataentry() {
                   </div>
                 )}
               </div>
+
+              {/* Sub-items list */}
               <ol type="1" className={style.subItemlist}>
                 {/* Unordered list for sub-items */}
                 {item.subItems.map((subItem, subIndex) => (
                   <li key={subIndex}>
                     <div className={style.subitemContainer}>
-                      {editingSubItemIndex &&
-                      editingSubItemIndex.itemIndex === index &&
-                      editingSubItemIndex.subItemIndex === subIndex ? (
-                        <div>
-                          <input
-                            type="text"
-                            value={subItemName}
-                            onChange={(e) => setSubItemName(e.target.value)}
-                          />
-                          <input
-                            type="text"
-                            value={subItemDescription}
-                            onChange={(e) =>
-                              setSubItemDescription(e.target.value)
-                            }
-                            className={style.subitemDescription}
-                          />
-                          {/* Add input field for editing sub-item description */}
-                          <DoneIcon
-                            style={{ cursor: "pointer" }}
-                            onClick={finishEditingSubItem}
-                          >
-                            Done
-                          </DoneIcon>
-                        </div>
-                      ) : (
-                        <div>
+                      {/* Sub-item title, edit/delete buttons, description */}
+                      <div className={style.inline}>
+                        {editingSubItemIndex &&
+                        editingSubItemIndex.itemIndex === index &&
+                        editingSubItemIndex.subItemIndex === subIndex ? (
                           <div className={style.inline}>
-                            {" "}
+                            <input
+                              type="text"
+                              value={subItemName}
+                              onChange={(e) => setSubItemName(e.target.value)}
+                            />
+                            <input
+                              type="text"
+                              value={subItemDescription}
+                              onChange={(e) =>
+                                setSubItemDescription(e.target.value)
+                              }
+                            />
+                            <DoneIcon
+                              style={{ cursor: "pointer" }}
+                              onClick={() => finishEditingSubItem()}
+                            >
+                              Done
+                            </DoneIcon>
+                          </div>
+                        ) : (
+                          <div>
                             <span className={style.subitemTitle}>
                               {subItem.title}
                             </span>
-                            {/* Display sub-item description */}
                             <EditIcon
                               style={{ cursor: "pointer" }}
                               onClick={() =>
@@ -286,33 +328,92 @@ export default function Dataentry() {
                               Delete Sub-Item
                             </DeleteForeverIcon>
                           </div>
-                          <div className={style.subitemDescription}>
-                            Description:- {"("}
-                            {subItem.description}
-                            {")"}
-                          </div>
-                          {/* Adding question functionality */}
-                          <div className={style.inline}>
-                            <input
-                              type="text"
-                              value={question}
-                              onChange={handleQuestionInputChange}
-                              placeholder="Enter question"
-                            />
-                            <SaveIcon
-                              style={{ cursor: "pointer" }}
-                              onClick={() => addQuestion(index, subIndex)}
-                            >
-                              Save Question
-                            </SaveIcon>
-                          </div>
-                          <ul>
-                            {subItem.questions.map((q, qIndex) => (
-                              <li key={qIndex}>{q.question}</li>
-                            ))}
-                          </ul>
+                        )}
+                      </div>
+                      <div className={style.subitemDescription}>
+                        Description: {subItem.description}
+                      </div>
+
+                      {/* Add question */}
+                      {isAddingQuestion  ? ( // Ensure editing the correct sub-item
+                        <div className={style.question}>
+                          <input
+                            type="text"
+                            value={question}
+                            onChange={(e) => setQuestion(e.target.value)}
+                            placeholder="Enter new question"
+                          />
+                          <SaveIcon
+                            style={{ cursor: "pointer" }}
+                            onClick={() => addQuestion(index, subIndex)}
+                          >
+                            Save New Question
+                          </SaveIcon>
+                        </div>
+                      ) : (
+                        <div className={style.addQuestionContainer}>
+                          <AddIcon
+                            style={{ cursor: "pointer" }}
+                            onClick={() => {
+                              setIsAddingQuestion(true);
+                              setAddingSubItemIndex({
+                                itemIndex: index,
+                                subItemIndex: subIndex,
+                              });
+                            }}
+                          >
+                            Add Question
+                          </AddIcon>
                         </div>
                       )}
+
+                      {/* Questions list */}
+                      <ol type="a" className={style.question}>
+                        {subItem.questions.map((q, qIndex) => (
+                          <li key={qIndex}>
+                            {/* Edit question */}
+                            {editingQuestion &&
+                            editingQuestion.itemIndex === index &&
+                            editingQuestion.subItemsIndex === subIndex &&
+                            editingQuestion.questionIndex === qIndex ? (
+                              <div className={style.inline}>
+                                <input
+                                  type="text"
+                                  value={editedQuestion}
+                                  onChange={handleEditedQuestionInputChange}
+                                />
+                                <DoneIcon
+                                  style={{ cursor: "pointer" }}
+                                  onClick={saveEditedQuestion}
+                                >
+                                  Save
+                                </DoneIcon>
+                              </div>
+                            ) : (
+                              <div className={style.inline}>
+                                {q.question}
+                                {/* Edit and delete question buttons */}
+                                <EditIcon
+                                  style={{ cursor: "pointer" }}
+                                  onClick={() =>
+                                    editQuestion(index, subIndex, qIndex)
+                                  }
+                                >
+                                  Edit
+                                </EditIcon>
+                                <DeleteForeverIcon
+                                  style={{ cursor: "pointer" }}
+                                  onClick={() =>
+                                    deleteQuestion(index, subIndex, qIndex)
+                                  }
+                                >
+                                  Delete
+                                </DeleteForeverIcon>
+                              </div>
+                            )}
+                          </li>
+                        ))}
+                      </ol>
                     </div>
                   </li>
                 ))}
