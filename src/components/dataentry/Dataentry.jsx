@@ -20,7 +20,7 @@ export default function Dataentry() {
   const [addingSubItemIndex, setAddingSubItemIndex] = useState(null);
   const [editingQuestion, setEditingQuestion] = useState(null);
   const [editedQuestion, setEditedQuestion] = useState("");
-  const [isAddingQuestion , setIsAddingQuestion] = useState(false)
+  const [isAddingQuestion, setIsAddingQuestion] = useState(false);
 
   // Function to handle item input field change
   const handleItemInputChange = (event) => {
@@ -53,6 +53,7 @@ export default function Dataentry() {
       const newItem = { title: itemName, subItems: [] };
       setData([...data, newItem]);
       setItemName("");
+      sendDataToBackend();
     }
   };
 
@@ -71,6 +72,7 @@ export default function Dataentry() {
       setSubItemDescription("");
       setIsAddingSubItem(false);
       setAddingSubItemIndex(null);
+      sendDataToBackend();
     }
   };
 
@@ -85,6 +87,7 @@ export default function Dataentry() {
       setData(newData);
       setQuestion("");
       setIsAddingQuestion(false);
+      sendDataToBackend();
     }
   };
 
@@ -164,19 +167,19 @@ export default function Dataentry() {
   };
 
   // Function to send the data to the backend
-  // const sendDataToBackend = async () => {
-  //   try {
-  //     console.log(data);
-  //     const response = await axios.get("/login", data, {
-  //       headers: {
-  //         "Content-Type": "application/json",
-  //       },
-  //     });
-  //     console.log("Data sent successfully!");
-  //   } catch (error) {
-  //     console.error("Error sending data to the backend:", error);
-  //   }
-  // };
+  const sendDataToBackend = async () => {
+    try {
+      const response = await axios.post("/data", data, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      console.log("Data sent successfully!");
+      console.log(data);
+    } catch (error) {
+      console.error("Error sending data to the backend:", error);
+    }
+  };
 
   return (
     <div className={style.dashboardContainer}>
@@ -188,7 +191,9 @@ export default function Dataentry() {
             onChange={handleItemInputChange}
             placeholder="Enter item name"
           />
-          <button onClick={addItem}>Save</button>
+          <SaveIcon style={{ cursor: "pointer" }} onClick={addItem}>
+            Save
+          </SaveIcon>
         </div>
       </div>
 
@@ -335,7 +340,7 @@ export default function Dataentry() {
                       </div>
 
                       {/* Add question */}
-                      {isAddingQuestion  ? ( // Ensure editing the correct sub-item
+                      {isAddingQuestion ? ( // Ensure editing the correct sub-item
                         <div className={style.question}>
                           <input
                             type="text"

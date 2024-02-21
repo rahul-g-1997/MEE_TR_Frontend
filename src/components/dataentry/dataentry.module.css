@@ -73,7 +73,7 @@ input {
 
 .subitemDescription {
     margin-top: 50px;
-    margin-left:  80px;
+    margin-left: 20px;
 }
 
 .inline {
@@ -84,11 +84,12 @@ input {
 .subItemlist {
     margin-left: 50px;
 }
+
 .question {
     margin-top: 10px !important;
     margin-bottom: 10px !important;
     /* Adjust this value as needed */
-    margin-left: 80px;
+    margin-left: 50px;
     display: block;
     /* Ensures each question appears on a new line */
 }
