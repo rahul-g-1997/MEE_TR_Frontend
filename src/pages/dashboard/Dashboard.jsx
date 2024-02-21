@@ -1,6 +1,6 @@
 import { useState } from "react";
 import {   Dataentry, Sidebar } from "../../components";
-import style from "./Dashboard.module.css";
+import style from "./dashboard.module.css";
 
 const Dashboard = () => {
   const [data, setData] = useState({})
