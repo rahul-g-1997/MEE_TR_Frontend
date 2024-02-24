@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import style from "./dataentry.module.css";
-import axios from "axios";
 import AddIcon from "@mui/icons-material/Add";
 import SaveIcon from "@mui/icons-material/Save";
 import CancelIcon from "@mui/icons-material/Cancel";
@@ -38,9 +37,9 @@ export default function Dataentry() {
   };
 
   // Function to handle question input field change
-  const handleQuestionInputChange = (event) => {
-    setQuestion(event.target.value);
-  };
+  // const handleQuestionInputChange = (event) => {
+  //   setQuestion(event.target.value);
+  // };
 
   // Function to handle edited question input field change
   const handleEditedQuestionInputChange = (event) => {
@@ -53,7 +52,6 @@ export default function Dataentry() {
       const newItem = { title: itemName, subItems: [] };
       setData([...data, newItem]);
       setItemName("");
-      sendDataToBackend();
     }
   };
 
@@ -72,7 +70,6 @@ export default function Dataentry() {
       setSubItemDescription("");
       setIsAddingSubItem(false);
       setAddingSubItemIndex(null);
-      sendDataToBackend();
     }
   };
 
@@ -87,7 +84,6 @@ export default function Dataentry() {
       setData(newData);
       setQuestion("");
       setIsAddingQuestion(false);
-      sendDataToBackend();
     }
   };
 
@@ -167,19 +163,18 @@ export default function Dataentry() {
   };
 
   // Function to send the data to the backend
-  const sendDataToBackend = async () => {
-    try {
-      const response = await axios.post("/data", data, {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-      console.log("Data sent successfully!");
-      console.log(data);
-    } catch (error) {
-      console.error("Error sending data to the backend:", error);
-    }
-  };
+  // const sendDataToBackend = async () => {
+  //   try {
+  //     const response = await axios.post("/data", itemName.trim() , {
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //       },
+  //     });
+  //     console.log("Data sent successfully!", itemName.trim());
+  //   } catch (error) {
+  //     console.error("Error sending data to the backend:", error);
+  //   }
+  // };
 
   return (
     <div className={style.dashboardContainer}>
