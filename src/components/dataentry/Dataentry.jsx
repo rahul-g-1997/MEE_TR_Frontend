@@ -7,8 +7,7 @@ import DoneIcon from "@mui/icons-material/Done";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import EditIcon from "@mui/icons-material/Edit";
 
-export default function Dataentry() {
-  const [data, setData] = useState([]);
+export default function Dataentry({ data, setData }) {
   const [itemName, setItemName] = useState("");
   const [subItemName, setSubItemName] = useState("");
   const [subItemDescription, setSubItemDescription] = useState("");
@@ -20,6 +19,12 @@ export default function Dataentry() {
   const [editingQuestion, setEditingQuestion] = useState(null);
   const [editedQuestion, setEditedQuestion] = useState("");
   const [isAddingQuestion, setIsAddingQuestion] = useState(false);
+  const [subItemImages, setSubItemImages] = useState(
+    Array(data.length).fill("")
+  );
+  const [subItemDocument, setSubItemDocument] = useState(
+    Array(data.length).fill("")
+  );
 
   // Function to handle item input field change
   const handleItemInputChange = (event) => {
@@ -35,11 +40,6 @@ export default function Dataentry() {
   const handleSubItemDescriptionChange = (event) => {
     setSubItemDescription(event.target.value);
   };
-
-  // Function to handle question input field change
-  // const handleQuestionInputChange = (event) => {
-  //   setQuestion(event.target.value);
-  // };
 
   // Function to handle edited question input field change
   const handleEditedQuestionInputChange = (event) => {
@@ -62,15 +62,35 @@ export default function Dataentry() {
         title: subItemName,
         description: subItemDescription,
         questions: [],
+        document: subItemDocument[itemIndex] || "",
       };
       const newData = [...data];
       newData[itemIndex].subItems.push(newItem);
       setData(newData);
       setSubItemName("");
       setSubItemDescription("");
+      setSubItemDocument("");
       setIsAddingSubItem(false);
       setAddingSubItemIndex(null);
     }
+  };
+
+  const handleImageInputChange = (event, itemIndex, subItemIndex) => {
+    const files = event.target.files;
+    setSubItemImages((prevState) => {
+      const newState = [...prevState];
+      newState[itemIndex][subItemIndex] = files[0];
+      return newState;
+    });
+  };
+
+  const handleDocumentInputChange = (event, itemIndex) => {
+    const file = event.target.files[0];
+    setSubItemDocument((prevState) => {
+      const newState = [...prevState];
+      newState[itemIndex] = file;
+      return newState;
+    });
   };
 
   // Function to add a question to a sub-item
@@ -162,20 +182,6 @@ export default function Dataentry() {
     }
   };
 
-  // Function to send the data to the backend
-  // const sendDataToBackend = async () => {
-  //   try {
-  //     const response = await axios.post("/data", itemName.trim() , {
-  //       headers: {
-  //         "Content-Type": "application/json",
-  //       },
-  //     });
-  //     console.log("Data sent successfully!", itemName.trim());
-  //   } catch (error) {
-  //     console.error("Error sending data to the backend:", error);
-  //   }
-  // };
-
   return (
     <div className={style.dashboardContainer}>
       <div className={style.itemContainer}>
@@ -260,7 +266,10 @@ export default function Dataentry() {
                       onChange={handleSubItemDescriptionChange}
                       placeholder="Enter sub-item description"
                     />
-                    <input type="file" />
+                    <input
+                      type="file"
+                      onChange={(e) => handleDocumentInputChange(e, index)}
+                    />
                     <SaveIcon
                       style={{ cursor: "pointer" }}
                       onClick={() => addSubItem(index)}
@@ -422,7 +431,6 @@ export default function Dataentry() {
           </li>
         ))}
       </ol>
-      {/* <button onClick={sendDataToBackend}>Save data</button> */}
     </div>
   );
 }

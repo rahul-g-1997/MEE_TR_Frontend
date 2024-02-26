@@ -1,8 +1,12 @@
-.view{
+.view {
     background-color: black;
     width: 100%;
     color: azure;
     padding: 20px;
+}
+
+table {
+    width: 100%;
 }
 
 table,
@@ -10,4 +14,16 @@ th,
 td {
     border: 1px solid rgb(255, 255, 255);
     border-collapse: collapse;
+    padding: 5px;
+    text-align: left;
+
+}
+
+.subItemsTable,
+td {
+    border: 1px solid rgb(255, 255, 255);
+    vertical-align: top;
+}
+.questions{
+    margin-left: 200px !important;
 }

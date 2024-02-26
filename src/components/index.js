@@ -5,3 +5,4 @@ export { default as Usernav } from "./usernav/Usernav";
 export { default as Sidebar } from "./sidebar/Sidebar";
 export { default as Dataentry } from "./dataentry/Dataentry";
 export { default as View } from "./view/View";
+export { default as Pdfrenderer } from "./pdfrenderer/Pdfrenderer";
