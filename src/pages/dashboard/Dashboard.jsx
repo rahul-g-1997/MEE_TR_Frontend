@@ -1,4 +1,4 @@
-import * as React from "react";
+import { useState } from "react";
 import MuiDrawer from "@mui/material/Drawer";
 import MuiAppBar from "@mui/material/AppBar";
 import MenuIcon from "@mui/icons-material/Menu";
@@ -75,8 +75,8 @@ const Drawer = styled(MuiDrawer, {
 const defaultTheme = createTheme();
 
 export default function Dashboard() {
-  const [open, setOpen] = React.useState(false);
-  const [showForm, setShowForm] = React.useState(true);
+  const [open, setOpen] = useState(false);
+  const [showForm, setShowForm] = useState(true);
 
   const toggleDrawer = () => {
     setOpen(!open);
@@ -85,6 +85,15 @@ export default function Dashboard() {
   const handleDashboardClick = () => {
     setShowForm(!showForm);
   };
+
+  const [form, setForm] = useState([
+    { Element: "Context", Indicator: [] },
+    { Element: "Planning", Indicator: [] },
+    { Element: "Input", Indicator: [] },
+    { Element: "Process", Indicator: [] },
+    { Element: "Output", Indicator: [] },
+    { Element: "Outcome", Indicator: [] },
+  ]);
 
   return (
     <ThemeProvider theme={defaultTheme}>
@@ -156,7 +165,7 @@ export default function Dashboard() {
             }}
           >
             <div className={style.container}>
-              {showForm && <FormComponent />}
+              {showForm && <FormComponent form={form} setForm={setForm} />}
             </div>
           </Container>
         </Box>
