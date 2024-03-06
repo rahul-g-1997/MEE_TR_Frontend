@@ -29,14 +29,14 @@
 }
 
 .shape:first-child {
-    background: linear-gradient(#6a6a6a, #a5a5a5);
+    background: linear-gradient(#d08630, #ffbe74);
     left: -80px;
     top: -120px;
 }
 
 .shape:last-child {
-    background: linear-gradient(to right, #6a6a6a,
-            #a5a5a5);
+    background: linear-gradient(to right, #d08630,
+            #ffbe74);
     right: -45px;
     bottom: -50px;
 }
@@ -80,7 +80,7 @@ input {
     height: 50px;
     width: 90%;
     background-color: rgba(255, 255, 255, 0.218);
-    border-radius: 3px ;
+    border-radius: 3px;
     padding: 0 10px;
     margin-top: 5px;
     font-size: 14px;

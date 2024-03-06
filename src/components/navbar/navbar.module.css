@@ -19,12 +19,11 @@ body {
 
 .navbar {
     height: 60px;
-    background-color: #6a6a6a;
-    position: relative;
+    background-color: #d08630;
     position: sticky;
     top: 0;
     z-index: 1000;
-    box-Shadow: 4px 4px 4px rgba(0, 0, 0, 1),
+    box-shadow: 1px 2px 4px rgba(0, 0, 0, 1);
 }
 
 .logo {

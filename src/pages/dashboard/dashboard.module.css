@@ -1,3 +1,16 @@
-.dashboardContainer{
+.dashboard {
     display: flex;
+    background-color: black;
+    margin: 0;
+    padding: 0;
+    width: 90%;
+    margin-top: 90px;
+}
+
+.container {
+    display: flex;
+    width: 100%;
+    border-radius: 7px;
+    box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px;
+    padding: 20px;
 }
