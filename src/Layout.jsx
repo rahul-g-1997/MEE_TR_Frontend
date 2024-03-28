@@ -2,7 +2,7 @@ import { useSelector } from "react-redux";
 import { Outlet } from "react-router-dom";
 import Container from "@mui/material/Container";
 import Box from "@mui/material/Box";
-import { Footer, Navbar, Usernav } from "./components";
+import { Footer, Navbar} from "./components";
 import upArrowIcon from "./assets/up-arrow.png";
 
 const Layout = () => {
