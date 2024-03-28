@@ -1,7 +1,6 @@
 
-
-export default function FormView() {
+export default function AdmineformView() {
   return (
-    <div>viwe</div>
-  );
+    <div>AdmineformView</div>
+  )
 }

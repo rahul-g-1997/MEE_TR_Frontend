@@ -8,3 +8,5 @@ export { default as View } from "./view/View";
 export { default as Pdfrenderer } from "./pdfrenderer/Pdfrenderer";
 export { default as FormComponent } from "./formComponent/FormComponent";
 export { default as FormGenerator } from "./formGenerator/FormGenerator";
+export { default as AdminFormView } from "./admineformView/AdmineformView";
+export { default as UserFormView} from "./userFormView/UserFormView";

@@ -33,7 +33,7 @@ export default function Navbar() {
 
             <li>
               <NavLink
-                to="/about"
+                to="about"
                 className={({ isActive }) => (isActive ? style.active : "")}
               >
                 About
@@ -41,7 +41,7 @@ export default function Navbar() {
             </li>
             <li>
               <NavLink
-                to="/blog"
+                to="blog"
                 className={({ isActive }) => (isActive ? style.active : "")}
               >
                 Blog
@@ -49,7 +49,7 @@ export default function Navbar() {
             </li>
             <li>
               <NavLink
-                to="/projects"
+                to="projects"
                 className={({ isActive }) => (isActive ? style.active : "")}
               >
                 Projects
@@ -57,7 +57,7 @@ export default function Navbar() {
             </li>
             <li>
               <NavLink
-                to="/contact"
+                to="contact"
                 className={({ isActive }) => (isActive ? style.active : "")}
               >
                 Contact

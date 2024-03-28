@@ -1,15 +1,13 @@
 import { useState } from "react";
+import { Grid, TextField, IconButton, Tooltip } from "@mui/material";
 import Drawer from "@mui/material/Drawer";
 import FormGenerator from "../formGenerator/FormGenerator";
 import Box from "@mui/material/Box";
-import Button from "@mui/material/Button";
-import Select from "@mui/material/Select";
-import MenuItem from "@mui/material/MenuItem";
-import style from "./formComponent.module.css";
+import AddIcon from "@mui/icons-material/Add";
+import EditIcon from "@mui/icons-material/Edit";
+import DeleteIcon from "@mui/icons-material/Delete";
 
 export default function FormComponent({ form, setForm }) {
-  
-
   const [fields, setFields] = useState([]);
   const [newField, setNewField] = useState({
     id: "",
@@ -24,10 +22,6 @@ export default function FormComponent({ form, setForm }) {
 
   const toggleRightDrawer = () => {
     setRightDrawerOpen(!rightDrawerOpen);
-  };
-
-  const handleElementChange = (event) => {
-    setSelectedElement(event.target.value);
   };
 
   const handleEditField = (field) => {
@@ -63,49 +57,59 @@ export default function FormComponent({ form, setForm }) {
       <div>
         <h3>Create Form</h3>
 
-        <Select
-          value={selectedElement}
-          onChange={handleElementChange}
-          displayEmpty
-          fullWidth
-          size="small"
-          labelId="demo-select-small-label"
-          id="demo-select-small"
-        >
-          <MenuItem value="" disabled>
-            Select Element
-          </MenuItem>
-          <MenuItem value="Context">Context</MenuItem>
-          <MenuItem value="Planning">Planning</MenuItem>
-          <MenuItem value="Input">Input</MenuItem>
-          <MenuItem value="Process">Process</MenuItem>
-          <MenuItem value="Output">Output</MenuItem>
-          <MenuItem value="Outcome">Outcome</MenuItem>
-        </Select>
-
-        {/* Display elements from the form state */}
-        <ol type={"1"}>
-          {form.find((item) => item.Element === selectedElement) && (
-            <li>
-              {selectedElement}
-              <Button onClick={toggleRightDrawer}>Add field</Button>
-            </li>
-          )}
-        </ol>
-
-        {fields.map((field) => (
-          <div key={field.id} className={style.container}>
-            <label>{field.label}:</label>
-            <input type={field.type} placeholder={field.placeholder} />
-            <Button onClick={() => handleEditField(field)} variant="contained">
-              Edit
-            </Button>
-            <Button
-              onClick={() => handleDeleteField(field.id)}
-              variant="contained"
-            >
-              Delete
-            </Button>
+        {form.map((element, index) => (
+          <div key={index} onClick={() => setSelectedElement(element.Element)}>
+            {element.Element}
+            {element.Indicator.map((indicator) => (
+              <Grid
+                container
+                spacing={2}
+                key={indicator.id}
+                alignItems="center"
+              >
+                <Grid item xs={2}>
+                  <TextField
+                    label={indicator.label}
+                    size="small"
+                    value={indicator.value} 
+                  />
+                </Grid>
+                <Grid item xs={2}>
+                  <IconButton
+                    onClick={() => handleEditField(indicator)}
+                    aria-label="Edit"
+                    color="primary"
+                  >
+                    <Tooltip title="Edit">
+                      <EditIcon />
+                    </Tooltip>
+                  </IconButton>
+                </Grid>
+                <Grid item xs={2}>
+                  <IconButton
+                    onClick={() => handleDeleteField(indicator.id)}
+                    aria-label="Delete"
+                    color="secondary"
+                  >
+                    <Tooltip title="Delete">
+                      <DeleteIcon />
+                    </Tooltip>
+                  </IconButton>
+                </Grid>
+              </Grid>
+            ))}
+            <Tooltip title="Add field">
+              <IconButton
+                onClick={() => {
+                  setSelectedElement(element.Element);
+                  toggleRightDrawer();
+                }}
+                aria-label="Add field"
+                sx={{ mt: 2 }}
+              >
+                <AddIcon />
+              </IconButton>
+            </Tooltip>
           </div>
         ))}
       </div>

@@ -1,7 +1,13 @@
-import style from "./formGenerator.module.css";
-import Button from "@mui/material/Button";
 import { useEffect } from "react";
-
+import {
+  Button,
+  Grid,
+  TextField,
+  Select,
+  MenuItem,
+  FormControl,
+  Typography,
+} from "@mui/material";
 
 function FormGenerator({
   fields,
@@ -68,44 +74,45 @@ function FormGenerator({
   }, [form]);
 
   return (
-    <div className={style.container}>
-      <h3>Add Custom Field</h3>
-      <div className={style.inputGroup}>
-        <label htmlFor="labelInput">Label:</label>
-        <input
-          id="labelInput"
-          type="text"
-          name="label"
-          value={newField.label}
-          onChange={handleChange}
-        />
-      </div>
-      <div className={style.inputGroup}>
-        <label htmlFor="typeSelect">Type:</label>
-        <select
-          id="typeSelect"
-          name="type"
-          value={newField.type}
-          onChange={handleChange}
-        >
-          <option value="text">Text</option>
-          <option value="number">Number</option>
-          <option value="email">Email</option>
-          <option value="file">Document attach</option>
-          {/* Add more options as needed */}
-        </select>
-      </div>
-      <div className={style.inputGroup}>
-        <label htmlFor="placeholderInput">Placeholder:</label>
-        <input
-          id="placeholderInput"
-          type="text"
-          name="placeholder"
-          value={newField.placeholder}
-          onChange={handleChange}
-        />
-      </div>
-      <Button onClick={handleAddField} variant="contained">
+    <div style={{ width: 250, padding: 20, marginTop: 60 }}>
+      <Typography variant="h5">Add Custom Field</Typography>
+      <Grid container spacing={2} sx={{ mt: 1 }}>
+        <Grid item xs={12}>
+          <TextField
+            size="small"
+            label="Label"
+            name="label"
+            value={newField.label}
+            onChange={handleChange}
+          />
+        </Grid>
+        <Grid item xs={12}>
+          <FormControl fullWidth size="small">
+            <Select value={newField.type} onChange={handleChange} name="type">
+              <MenuItem value="text">Text</MenuItem>
+              <MenuItem value="number">Number</MenuItem>
+              <MenuItem value="email">Email</MenuItem>
+              <MenuItem value="file">Document attach</MenuItem>
+            </Select>
+          </FormControl>
+        </Grid>
+        <Grid item xs={12}>
+          <TextField
+            size="small"
+            fullWidth
+            label="Placeholder"
+            name="placeholder"
+            value={newField.placeholder}
+            onChange={handleChange}
+          />
+        </Grid>
+      </Grid>
+      <Button
+        onClick={handleAddField}
+        variant="contained"
+        fullWidth
+        sx={{ mt: 2 }} // Add margin top
+      >
         {editMode ? "Update" : "Add"}
       </Button>
     </div>

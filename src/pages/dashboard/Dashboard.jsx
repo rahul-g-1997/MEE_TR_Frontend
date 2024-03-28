@@ -6,10 +6,9 @@ import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
-import { secondaryListItems } from "./listItems";
 import profileLogo from "../../assets/profile.png";
 import Avatar from "@mui/material/Avatar";
-import { FormComponent } from "../../components";
+import { FormComponent, AdminFormView, UserFormView } from "../../components";
 import {
   Container,
   styled,
@@ -25,6 +24,7 @@ import {
 } from "@mui/material";
 import style from "./dashboard.module.css";
 import DashboardIcon from "@mui/icons-material/Dashboard";
+import AssignmentIcon from "@mui/icons-material/Assignment";
 
 const drawerWidth = 240;
 
@@ -76,14 +76,15 @@ const defaultTheme = createTheme();
 
 export default function Dashboard() {
   const [open, setOpen] = useState(false);
-  const [showForm, setShowForm] = useState(true);
+  const [selectedView, setSelectedView] = useState("Dashboard");
 
   const toggleDrawer = () => {
     setOpen(!open);
   };
 
-  const handleDashboardClick = () => {
-    setShowForm(!showForm);
+  const handleViewClick = (view) => {
+    setSelectedView(view);
+    setOpen(false); // Close the drawer when a view is selected
   };
 
   const [form, setForm] = useState([
@@ -133,15 +134,34 @@ export default function Dashboard() {
           </Toolbar>
           <Divider />
           <List>
-            <ListItemButton onClick={handleDashboardClick}>
+            <ListItemButton
+              onClick={() => handleViewClick("Dashboard")}
+              selected={selectedView === "Dashboard"}
+            >
               <ListItemIcon>
                 <DashboardIcon />
               </ListItemIcon>
               <ListItemText primary="Dashboard" />
             </ListItemButton>
+            <ListItemButton
+              onClick={() => handleViewClick("Admin Form View")}
+              selected={selectedView === "Admin Form View"}
+            >
+              <ListItemIcon>
+                <AssignmentIcon />
+              </ListItemIcon>
+              <ListItemText primary="Admin Form View" />
+            </ListItemButton>
+            <ListItemButton
+              onClick={() => handleViewClick("User Form View")}
+              selected={selectedView === "User Form View"}
+            >
+              <ListItemIcon>
+                <AssignmentIcon />
+              </ListItemIcon>
+              <ListItemText primary="User Form View" />
+            </ListItemButton>
           </List>
-          <Divider />
-          <List>{secondaryListItems}</List>
         </Drawer>
         <Box
           component="main"
@@ -165,7 +185,15 @@ export default function Dashboard() {
             }}
           >
             <div className={style.container}>
-              {showForm && <FormComponent form={form} setForm={setForm} />}
+              {selectedView === "Dashboard" && (
+                <FormComponent form={form} setForm={setForm} />
+              )}
+              {selectedView === "Admin Form View" && (
+                <AdminFormView form={form} setForm={setForm} />
+              )}
+              {selectedView === "User Form View" && (
+                <UserFormView form={form} />
+              )}
             </div>
           </Container>
         </Box>
